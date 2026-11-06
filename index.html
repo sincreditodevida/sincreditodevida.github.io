@@ -401,7 +401,7 @@
 
             <div class="card-panel">
                 <div class="card-title">Tu Nombre</div>
-                <input type="text" id="input-name" placeholder="Ingresa tu nombre..." value="André">
+                <input type="text" id="input-name" placeholder="Ingresa tu nombre..." value="">
             </div>
 
             <div class="card-panel">
@@ -449,7 +449,7 @@
                         <div class="nss-month-lbl">MES</div>
                     </div>
                     <div class="nss-user-info">
-                        <div class="nss-user-name" id="hud-user-fullname">ANDRÉ - TONY</div>
+                        <div class="nss-user-name" id="hud-user-fullname"> - TONY</div>
                         <div class="nss-user-sub" id="hud-user-district">SAN JUAN DE LURIGANCHO <span>BUS / COLECTIVO</span></div>
                     </div>
                     <div class="nss-avatar" id="hud-avatar-icon">👦</div>
@@ -608,7 +608,7 @@
 
     <script>
         let gameState = {
-            playerName: "André",
+            playerName: "",
             characterKey: "Tony",
             ingresoMensual: 1025,
             saldo: 1025,
@@ -741,7 +741,7 @@
 
         function goToBio() {
             const inputVal = document.getElementById('input-name').value.trim();
-            gameState.playerName = inputVal !== "" ? inputVal : "André";
+            gameState.playerName = inputVal !== "" ? inputVal : "";
 
             const data = personajesData[gameState.characterKey];
             document.getElementById('bio-title').innerText = data.nombre;
