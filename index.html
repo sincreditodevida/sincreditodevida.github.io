@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sin Crédito de Vida - Simulación 12 Meses</title>
+    <title>Sin Crédito de Vida - Simulador</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #0d0d0d;
+            background-color: #000000;
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -22,15 +22,15 @@
 
         .app-container {
             width: 100%;
-            max-width: 450px;
-            background-color: #161616;
+            max-width: 440px;
+            background-color: #121418;
             display: flex;
             flex-direction: column;
             padding: 14px;
             gap: 12px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.9);
-            border-left: 1px solid #222;
-            border-right: 1px solid #222;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.95);
+            border-left: 1px solid #1e222a;
+            border-right: 1px solid #1e222a;
         }
 
         .screen {
@@ -54,18 +54,18 @@
         }
 
         .card-panel {
-            background-color: #222222;
-            border: 1px solid #333;
+            background-color: #1a1d24;
+            border: 1px solid #282c36;
             border-radius: 12px;
-            padding: 12px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .card-title {
             font-size: 0.78rem;
-            color: #aaa;
+            color: #8892b0;
             text-transform: uppercase;
             font-weight: bold;
             letter-spacing: 1px;
@@ -73,16 +73,16 @@
 
         input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 10px;
-            background-color: #121212;
-            border: 1px solid #444;
+            padding: 10px 12px;
+            background-color: #0d0f12;
+            border: 1px solid #333a48;
             border-radius: 8px;
             color: #fff;
             font-size: 0.9rem;
             outline: none;
         }
 
-        input[type="text"]:focus, input[type="number"]:focus { border-color: #4cd964; }
+        input:focus { border-color: #4cd964; }
 
         .character-selector {
             display: grid;
@@ -91,16 +91,16 @@
         }
 
         .char-btn {
-            background-color: #181818;
-            border: 1px solid #333;
+            background-color: #121418;
+            border: 1px solid #282c36;
             border-radius: 8px;
-            padding: 10px 4px;
+            padding: 12px 4px;
             color: #fff;
             font-weight: bold;
             cursor: pointer;
             text-align: center;
             transition: all 0.2s;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
         .char-btn.selected {
@@ -115,7 +115,7 @@
             font-weight: 800;
             font-size: 0.95rem;
             border: none;
-            padding: 12px;
+            padding: 14px;
             border-radius: 10px;
             cursor: pointer;
             text-transform: uppercase;
@@ -126,81 +126,206 @@
         .main-btn:active { transform: scale(0.98); }
 
         .secondary-btn {
-            background-color: #333;
+            background-color: #282c36;
             color: #fff;
-            border: 1px solid #555;
+            border: 1px solid #3d4454;
             padding: 10px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
         }
 
-        /* HUD Superior Remodelado */
-        .hud-card {
-            background-color: #1f1f1f;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 10px;
+        /* HUD ESTILO NSS / PRO */
+        .hud-nss-card {
+            background-color: #1a1d24;
+            border: 1px solid #282c36;
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nss-top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nss-month-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.1;
+        }
+
+        .nss-month-num {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #ffffff;
+        }
+
+        .nss-month-lbl {
+            font-size: 0.6rem;
+            color: #8892b0;
+            font-weight: bold;
+        }
+
+        .nss-user-info {
+            flex-grow: 1;
+            margin-left: 12px;
+        }
+
+        .nss-user-name {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .nss-user-sub {
+            font-size: 0.7rem;
+            color: #8892b0;
+            font-weight: 600;
+        }
+
+        .nss-user-sub span {
+            color: #e63946;
+            display: block;
+        }
+
+        .nss-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #282c36;
+            border: 2px solid #e63946;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        /* Filas de Cajas de Métricas */
+        .nss-grid-row-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .nss-grid-row-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+        }
+
+        .nss-grid-row-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .nss-box {
+            background-color: #121418;
+            border-radius: 8px;
+            padding: 6px 2px;
+            border: 1px solid #242832;
+            text-align: center;
+        }
+
+        .nss-box-val {
+            font-size: 0.85rem;
+            font-weight: 900;
+            margin-top: 1px;
+        }
+
+        .nss-box-lbl {
+            font-size: 0.52rem;
+            color: #8892b0;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .val-sueldo { color: #4cd964; }
+        .val-saldo { color: #ffffff; }
+        .val-deuda { color: #ff3b30; }
+        .val-credito { color: #6c757d; }
+
+        /* Barra de Puntos y Botones Laterales */
+        .nss-bottom-area {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nss-progress-section {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
 
-        .hud-header {
+        .nss-progress-title {
             display: flex;
             justify-content: space-between;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #8892b0;
+        }
+
+        .nss-emojis-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4px;
+            font-size: 0.9rem;
+        }
+
+        .nss-side-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nss-icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid #282c36;
+            background-color: #121418;
+            display: flex;
             align-items: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 4px;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
-        .hud-player { font-weight: bold; color: #4cd964; font-size: 0.9rem; }
-        .hud-badge { background-color: #2e7d32; color: #fff; padding: 3px 6px; border-radius: 6px; font-size: 0.72rem; font-weight: bold; }
+        .nss-icon-btn.active {
+            border-color: #4cd964;
+            background-color: #1e3a29;
+            opacity: 1;
+            cursor: pointer;
+        }
 
-        .stats-grid-top {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
+        .nss-icon-btn.bag {
+            border-color: #e5a93c;
+            background-color: #382c16;
+            opacity: 1;
+        }
+
+        .nss-footer-btn {
+            background-color: #1c2028;
+            border: 1px solid #282c36;
+            color: #8892b0;
+            padding: 6px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: bold;
             text-align: center;
+            text-transform: uppercase;
         }
 
-        .stats-grid-bottom {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-            text-align: center;
-            margin-top: 2px;
-        }
-
-        .stat-box {
-            background-color: #121212;
-            border-radius: 6px;
-            padding: 5px 2px;
-            border: 1px solid #2a2a2a;
-        }
-
-        .stat-val { font-size: 0.85rem; font-weight: bold; margin-top: 1px; }
-        .stat-lbl { font-size: 0.55rem; color: #888; text-transform: uppercase; }
-
-        .income-val { color: #00bcd4; }
-        .money-val { color: #4cd964; }
-        .debt-val { color: #ff3b30; }
-        .health-val { color: #34c759; }
-        .fatigue-val { color: #ff9500; }
-        .family-val { color: #ea80fc; }
-
-        .tracker-bar {
-            background-color: #121212;
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 0.68rem;
-            color: #aaa;
-            display: flex;
-            justify-content: space-between;
-            border: 1px solid #2a2a2a;
-        }
-
-        /* Opciones de Decisiones */
+        /* Opciones de Eventos */
         .options-list {
             display: flex;
             flex-direction: column;
@@ -208,10 +333,10 @@
         }
 
         .opt-btn {
-            background-color: #1a1a1a;
-            border: 1px solid #3d3d3d;
+            background-color: #121418;
+            border: 1px solid #282c36;
             border-radius: 8px;
-            padding: 10px 12px;
+            padding: 12px;
             color: #fff;
             text-align: left;
             cursor: pointer;
@@ -220,36 +345,40 @@
 
         .opt-btn:hover {
             border-color: #4cd964;
-            background-color: #242424;
+            background-color: #1a1d24;
         }
 
         .opt-title { font-weight: bold; font-size: 0.85rem; margin-bottom: 3px; color: #ffffff; }
-        .opt-sub { font-size: 0.72rem; color: #aaa; line-height: 1.3; }
+        .opt-sub { font-size: 0.72rem; color: #8892b0; line-height: 1.3; }
 
         .avatar-box {
             width: 100%;
             height: 90px;
-            background-color: #121212;
+            background-color: #121418;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2.5rem;
-            border: 1px solid #333;
+            border: 1px solid #282c36;
         }
 
-        /* Desglose de Gastos de Cierre de Mes */
-        .expense-row {
+        /* Cierre de mes desglose */
+        .bill-row {
             display: flex;
             justify-content: space-between;
             font-size: 0.82rem;
             padding: 4px 0;
-            border-bottom: 1px dashed #333;
+            border-bottom: 1px dashed #282c36;
         }
 
-        .expense-row span:nth-child(2) {
+        .bill-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
             font-weight: bold;
-            color: #ff5252;
+            color: #4cd964;
+            padding-top: 6px;
         }
     </style>
 </head>
@@ -257,167 +386,219 @@
 
     <div class="app-container">
 
-        <!-- PANTALLA 1: MENÚ PRINCIPAL -->
+        <!-- ================= PANTALLA 1: MENÚ PRINCIPAL ================= -->
         <div id="screen-menu" class="screen">
             <div class="title-header">Sin Crédito de Vida</div>
 
             <div class="card-panel">
-                <div class="card-title">Reto de Supervivencia (1 Año - 12 Meses)</div>
-                <ul style="font-size: 0.76rem; color: #ccc; padding-left: 14px; line-height: 1.35;">
-                    <li>Supera 48 semanas tomando decisiones de presupuesto y salud.</li>
-                    <li>Paga o administra el alquiler al final de cada mes.</li>
-                    <li>Si acumulas 3 meses sin pagar la renta, perderás la vivienda.</li>
-                    <li>Mantén equilibrados la Salud, el Cansancio y la Red Familiar.</li>
+                <div class="card-title">Reto de Supervivencia (1 Año / 12 Meses)</div>
+                <ul style="font-size: 0.78rem; color: #8892b0; padding-left: 16px; line-height: 1.4;">
+                    <li>Supera 48 semanas de imprevistos reales en Lima.</li>
+                    <li>Administra la alimentación realista (~S/ 900/mes) y el alquiler.</li>
+                    <li>Equilibra Salud, Cansancio y Red Familiar para no colapsar.</li>
                 </ul>
             </div>
 
             <div class="card-panel">
                 <div class="card-title">Tu Nombre</div>
-                <input type="text" id="input-name" placeholder="Ingresa tu nombre..." value="Renzo">
+                <input type="text" id="input-name" placeholder="Ingresa tu nombre..." value="André">
             </div>
 
             <div class="card-panel">
                 <div class="card-title">Selecciona tu Perfil</div>
                 <div class="character-selector">
-                    <button class="char-btn selected" onclick="selectChar('Tony')">TONY</button>
-                    <button class="char-btn" onclick="selectChar('Maria')">MARÍA</button>
-                    <button class="char-btn" onclick="selectChar('Mario')">MARIO</button>
+                    <button class="char-btn selected" id="btn-tony" onclick="selectChar('Tony')">TONY</button>
+                    <button class="char-btn" id="btn-maria" onclick="selectChar('Maria')">MARÍA</button>
+                    <button class="char-btn" id="btn-mario" onclick="selectChar('Mario')">MARIO</button>
                 </div>
             </div>
 
             <button class="main-btn" onclick="goToBio()">VER FICHA ➔</button>
         </div>
 
-        <!-- PANTALLA 2: FICHA DE PERSONAJE -->
+        <!-- ================= PANTALLA 2: FICHA DE PERSONAJE ================= -->
         <div id="screen-bio" class="screen hidden">
             <div class="title-header">Ficha del Perfil</div>
 
             <div class="card-panel">
-                <div class="avatar-box" id="bio-avatar">✈️</div>
-                <h2 id="bio-title" style="color: #4cd964; text-align: center; margin-top: 4px; font-size: 1.15rem;">Tony (23)</h2>
-                <p id="bio-desc" style="font-size: 0.78rem; color: #ccc; line-height: 1.3; text-align: justify;"></p>
+                <div class="avatar-box" id="bio-avatar">👦</div>
+                <h2 id="bio-title" style="color: #4cd964; text-align: center; margin-top: 4px; font-size: 1.2rem;">Tony (23)</h2>
+                <p id="bio-desc" style="font-size: 0.8rem; color: #8892b0; line-height: 1.35; text-align: justify;"></p>
             </div>
 
             <div class="card-panel">
                 <div class="card-title">Condiciones Iniciales</div>
-                <div style="font-size: 0.76rem; color: #ddd; line-height: 1.45;" id="bio-stats"></div>
+                <div style="font-size: 0.78rem; color: #ffffff; line-height: 1.5;" id="bio-stats"></div>
             </div>
 
             <div style="display: flex; gap: 8px;">
                 <button class="secondary-btn" style="flex: 1;" onclick="goToMenu()">VOLVER</button>
-                <button class="main-btn" style="flex: 2;" onclick="startGame()">INICIAR 1 AÑO ▶</button>
+                <button class="main-btn" style="flex: 2;" onclick="startGame()">INICIAR SIMULACIÓN ▶</button>
             </div>
         </div>
 
-        <!-- PANTALLA 3: SIMULADOR (48 SEMANAS / 12 MESES) -->
+        <!-- ================= PANTALLA 3: SIMULADOR (GAMEPLAY HUD PRO) ================= -->
         <div id="screen-game" class="screen hidden">
-            <div class="hud-card">
-                <div class="hud-header">
-                    <span class="hud-player" id="hud-name">RENZO - TONY</span>
-                    <span class="hud-badge" id="hud-time">ENERO • S1</span>
+            
+            <!-- HUD SUPERIOR TIPO NSS / PRO -->
+            <div class="hud-nss-card">
+                <!-- Fila 1: Mes, Nombre y Avatar -->
+                <div class="nss-top-header">
+                    <div class="nss-month-badge">
+                        <div class="nss-month-num" id="hud-month-num">1</div>
+                        <div class="nss-month-lbl">MES</div>
+                    </div>
+                    <div class="nss-user-info">
+                        <div class="nss-user-name" id="hud-user-fullname">ANDRÉ - TONY</div>
+                        <div class="nss-user-sub" id="hud-user-district">SAN JUAN DE LURIGANCHO <span>BUS / COLECTIVO</span></div>
+                    </div>
+                    <div class="nss-avatar" id="hud-avatar-icon">👦</div>
                 </div>
-                
-                <!-- Fila 1 Finanzas -->
-                <div class="stats-grid-top">
-                    <div class="stat-box">
-                        <div class="stat-lbl">Ingreso Mensual</div>
-                        <div class="stat-val income-val" id="hud-income">S/ 1025</div>
+
+                <!-- Fila 2: Sueldo, Saldo, Deuda, Crédito (Inactivo) -->
+                <div class="nss-grid-row-4">
+                    <div class="nss-box">
+                        <div class="nss-box-val val-sueldo" id="hud-sueldo">S/ 1025</div>
+                        <div class="nss-box-lbl">SUELDO</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-lbl">Billetera</div>
-                        <div class="stat-val money-val" id="hud-money">S/ 1025</div>
+                    <div class="nss-box">
+                        <div class="nss-box-val val-saldo" id="hud-saldo">S/ 1025</div>
+                        <div class="nss-box-lbl">SALDO</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-lbl">Deuda</div>
-                        <div class="stat-val debt-val" id="hud-debt">S/ 0</div>
+                    <div class="nss-box">
+                        <div class="nss-box-val val-deuda" id="hud-deuda">S/ 0</div>
+                        <div class="nss-box-lbl">DEUDA</div>
+                    </div>
+                    <div class="nss-box">
+                        <div class="nss-box-val val-credito">NO DISP.</div>
+                        <div class="nss-box-lbl">CRÉDITO</div>
                     </div>
                 </div>
 
-                <!-- Fila 2 Porcentajes -->
-                <div class="stats-grid-bottom">
-                    <div class="stat-box">
-                        <div class="stat-lbl">Salud</div>
-                        <div class="stat-val health-val" id="hud-health">100%</div>
+                <!-- Fila 3: Alquiler, Alimentación, Transporte, Servicios, Mantenimiento -->
+                <div class="nss-grid-row-5">
+                    <div class="nss-box">
+                        <div class="nss-box-val" id="hud-g-alquiler">S/ 350</div>
+                        <div class="nss-box-lbl">ALQUILER</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-lbl">Cansancio</div>
-                        <div class="stat-val fatigue-val" id="hud-fatigue">0%</div>
+                    <div class="nss-box">
+                        <div class="nss-box-val" id="hud-g-alim">S/ 0</div>
+                        <div class="nss-box-lbl">ALIMENT.</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-lbl">Red Familiar</div>
-                        <div class="stat-val family-val" id="hud-family">100%</div>
+                    <div class="nss-box">
+                        <div class="nss-box-val" id="hud-g-transp">S/ 0</div>
+                        <div class="nss-box-lbl">TRANSP.</div>
+                    </div>
+                    <div class="nss-box">
+                        <div class="nss-box-val" id="hud-g-serv">S/ 80</div>
+                        <div class="nss-box-lbl">SERVICIOS</div>
+                    </div>
+                    <div class="nss-box">
+                        <div class="nss-box-val">S/ 0</div>
+                        <div class="nss-box-lbl">MANTEN.</div>
                     </div>
                 </div>
 
-                <!-- Tracker de Gastos del Mes en curso -->
-                <div class="tracker-bar">
-                    <span>Gastos Mes: <b id="hud-month-expenses" style="color:#ff5252;">S/ 0</b></span>
-                    <span>Renta Adeudada: <b id="hud-rent-status" style="color:#ffb74d;">0 Meses (S/ 0)</b></span>
+                <!-- Fila 4: Porcentajes (Salud, Cansancio, Red Familiar) -->
+                <div class="nss-grid-row-3">
+                    <div class="nss-box">
+                        <div class="nss-box-val" style="color:#34c759;" id="hud-pct-salud">100%</div>
+                        <div class="nss-box-lbl">SALUD</div>
+                    </div>
+                    <div class="nss-box">
+                        <div class="nss-box-val" style="color:#ff9500;" id="hud-pct-cansancio">0%</div>
+                        <div class="nss-box-lbl">CANSANCIO</div>
+                    </div>
+                    <div class="nss-box">
+                        <div class="nss-box-val" style="color:#5856d6;" id="hud-pct-red">80%</div>
+                        <div class="nss-box-lbl">RED FAMILIAR</div>
+                    </div>
                 </div>
+
+                <!-- Fila 5: Barra Crédito / Puntos y Botones Laterales -->
+                <div class="nss-bottom-area">
+                    <div class="nss-progress-section">
+                        <div class="nss-progress-title">
+                            <span>CRÉDITO / PUNTOS</span>
+                            <span id="hud-puntos-txt">4/100</span>
+                        </div>
+                        <div class="nss-emojis-bar">
+                            <span>😡</span>
+                            <span>😐</span>
+                            <span>🙂</span>
+                            <span>😀</span>
+                        </div>
+                    </div>
+
+                    <!-- Botones laterales -->
+                    <div class="nss-side-buttons">
+                        <div class="nss-icon-btn active" title="Tienda (Próximamente)">🛒</div>
+                        <div class="nss-icon-btn bag" title="Inventario (Inactivo)">💼</div>
+                        <div class="nss-icon-btn" title="Préstamos (Inactivo)">💰</div>
+                    </div>
+                </div>
+
+                <div class="nss-footer-btn">VER MESES ANTERIORES</div>
             </div>
 
             <!-- Panel de Decisiones Semanales -->
             <div class="card-panel" id="event-box" style="flex-grow: 1;">
-                <div id="event-title" style="font-weight: bold; font-size: 0.9rem; color: #fff;"></div>
-                <div id="event-desc" style="font-size: 0.78rem; color: #bbb; line-height: 1.35; margin-top: 4px;"></div>
+                <div id="event-title" style="font-weight: bold; font-size: 0.92rem; color: #fff;"></div>
+                <div id="event-desc" style="font-size: 0.8rem; color: #8892b0; line-height: 1.35; margin-top: 4px;"></div>
                 <div class="options-list" id="options-container" style="margin-top: 8px;"></div>
             </div>
         </div>
 
-        <!-- PANTALLA 3.5: CIERRE Y LIQUIDACIÓN MENSUAL -->
-        <div id="screen-monthly-settlement" class="screen hidden">
-            <div class="title-header" id="settlement-month-title">CIERRE DE ENERO</div>
+        <!-- ================= PANTALLA DE CIERRE DE MES ================= -->
+        <div id="screen-month-closing" class="screen hidden">
+            <div class="title-header">Cierre de Mes</div>
+
+            <div class="card-panel">
+                <div class="card-title">Estado Actual del Jugador</div>
+                <div class="nss-grid-row-3" style="margin-bottom: 6px;">
+                    <div class="nss-box"><div class="nss-box-val val-sueldo" id="close-hud-sueldo">S/ 1025</div><div class="nss-box-lbl">INGRESO</div></div>
+                    <div class="nss-box"><div class="nss-box-val val-saldo" id="close-hud-saldo">S/ 500</div><div class="nss-box-lbl">SALDO (BILLETERA)</div></div>
+                    <div class="nss-box"><div class="nss-box-val val-deuda" id="close-hud-deuda">S/ 0</div><div class="nss-box-lbl">DEUDA</div></div>
+                </div>
+                <div class="nss-grid-row-3">
+                    <div class="nss-box"><div class="nss-box-val" style="color:#34c759;" id="close-hud-salud">100%</div><div class="nss-box-lbl">SALUD</div></div>
+                    <div class="nss-box"><div class="nss-box-val" style="color:#ff9500;" id="close-hud-cansancio">0%</div><div class="nss-box-lbl">CANSANCIO</div></div>
+                    <div class="nss-box"><div class="nss-box-val" style="color:#5856d6;" id="close-hud-red">80%</div><div class="nss-box-lbl">RED FAMILIAR</div></div>
+                </div>
+            </div>
 
             <div class="card-panel">
                 <div class="card-title">Resumen de Gastos del Mes</div>
-                <div class="expense-row">
-                    <span>🚌 Transporte (Decisiones semanales):</span>
-                    <span id="exp-transport">S/ 0</span>
-                </div>
-                <div class="expense-row">
-                    <span>🥦 Alimentación (Decisiones semanales):</span>
-                    <span id="exp-food">S/ 0</span>
-                </div>
-                <div class="expense-row">
-                    <span>⚡ Servicios Básicos (Luz, agua, gas):</span>
-                    <span id="exp-services">S/ 120</span>
-                </div>
-                <div class="expense-row" style="border-bottom: 2px solid #444; padding-bottom: 6px;">
-                    <span>⚠️ Imprevistos / Varios:</span>
-                    <span id="exp-misc">S/ 0</span>
-                </div>
-                <div class="expense-row" style="font-weight: bold; font-size: 0.9rem; color: #fff;">
-                    <span>SUBTOTAL GASTOS MES:</span>
-                    <span id="exp-subtotal" style="color:#ff5252;">S/ 120</span>
-                </div>
+                <div class="bill-row"><span>Alimentación Acumulada:</span> <strong id="bill-alim">S/ 900</strong></div>
+                <div class="bill-row"><span>Transporte Acumulado:</span> <strong id="bill-transp">S/ 120</strong></div>
+                <div class="bill-row"><span>Servicios Básicos:</span> <strong id="bill-serv">S/ 80</strong></div>
+                <div class="bill-row"><span>Alquiler Pendiente de este mes:</span> <strong id="bill-rent-cost">S/ 350</strong></div>
+                <div class="bill-row" style="color:#ff3b30;"><span>Renta Adeudada Anterior:</span> <strong id="bill-rent-due">S/ 0</strong></div>
+                <div class="bill-total"><span>Deuda Total de Alquiler Acumulada:</span> <span id="bill-rent-total">S/ 350</span></div>
             </div>
 
-            <div class="card-panel" style="border: 1px solid #ffb74d;">
-                <div class="card-title" style="color:#ffb74d;">Gestión del Alquiler del Mes</div>
-                <p style="font-size: 0.78rem; color: #ccc;" id="rent-info-text">El costo del alquiler mensual es de S/ 450.</p>
-                
-                <div style="margin-top: 6px;">
-                    <label style="font-size: 0.75rem; color: #aaa;">Monto a pagar de Alquiler ahora (S/):</label>
-                    <input type="number" id="input-rent-pay" value="450" min="0" max="1500">
-                </div>
-                <p style="font-size: 0.7rem; color: #ff9500; margin-top: 4px;" id="rent-warning-text"></p>
+            <div class="card-panel">
+                <div class="card-title">Abonar al Alquiler</div>
+                <p style="font-size: 0.75rem; color: #8892b0;">Ingresa la cantidad que deseas abonar (Mínimo S/ 0, Máximo S/ <span id="max-pay-allowed">350</span>):</p>
+                <input type="number" id="input-pay-amount" placeholder="Monto a pagar..." min="0" value="350">
+                <p id="pay-error" style="color: #ff3b30; font-size: 0.75rem;" class="hidden"></p>
             </div>
 
-            <button class="main-btn" onclick="confirmMonthlySettlement()">PROCESAR PAGO Y CONTINUAR ➔</button>
+            <button class="main-btn" onclick="submitMonthClosing()">CONFIRMAR Y PASAR AL SIGUIENTE MES ➔</button>
         </div>
 
-        <!-- PANTALLA 4: RESULTADO FINAL -->
+        <!-- ================= PANTALLA 4: RESULTADO FINAL ================= -->
         <div id="screen-result" class="screen hidden">
             <div class="title-header">Evaluación Anual</div>
             
             <div class="card-panel" style="text-align: center;">
-                <h2 style="color: #4cd964; font-size: 1.25rem;" id="result-status">¡AÑO COMPLETO SUPERADO!</h2>
-                <p style="font-size: 0.82rem; margin-top: 6px; color: #ccc;" id="result-text"></p>
+                <h2 style="color: #4cd964; font-size: 1.3rem;" id="result-status">¡AÑO COMPLETADO!</h2>
+                <p style="font-size: 0.85rem; margin-top: 6px; color: #8892b0;" id="result-text"></p>
             </div>
 
             <div class="card-panel">
-                <div class="card-title">Balance de 12 Meses</div>
-                <div style="font-size: 0.82rem; line-height: 1.6;" id="result-stats"></div>
+                <div class="card-title">Balance Final de 12 Meses</div>
+                <div style="font-size: 0.85rem; line-height: 1.7;" id="result-stats"></div>
             </div>
 
             <button class="main-btn" onclick="goToMenu()">REINICIAR SIMULACIÓN ↺</button>
@@ -427,132 +608,120 @@
 
     <script>
         let gameState = {
-            playerName: "Renzo",
+            playerName: "André",
             characterKey: "Tony",
             ingresoMensual: 1025,
-            billetera: 1025,
+            saldo: 1025,
             deuda: 0,
             salud: 100,
             cansancio: 0,
-            redFamiliar: 100,
-            semanaAbsoluta: 1, // 1 a 48
+            redFamiliar: 80,
+            mesActual: 1,
+            semanaAbsoluta: 1,
             
-            // Rastreadores de Gastos del Mes actual
-            gastosMes: {
-                transporte: 0,
-                alimentacion: 0,
-                servicios: 120,
-                varios: 0
-            },
-            
-            // Sistema de Alquiler
-            costoAlquilerMensual: 450,
-            deudaAlquiler: 0,
-            mesesAdeudadosRenta: 0
+            alquilerCosto: 350,
+            alquilerAdeudado: 0,
+            mesesRentaSinPagar: 0,
+            gastosAlimMes: 0,
+            gastosTranspMes: 0,
+            gastosServMes: 80
         };
-
-        const mesesNombres = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
 
         const personajesData = {
             "Tony": {
                 nombre: "Tony (23 años)",
-                avatar: "✈️",
-                ingresoMensual: 1025,
-                billeteraInicial: 1025,
+                distrito: "SAN JUAN DE LURIGANCHO",
+                transporteDefecto: "BUS / COLECTIVO",
+                avatar: "👦",
+                ingreso: 1025,
+                alquiler: 350,
                 saludInicial: 100,
-                cansancioInicial: 10,
-                redFamiliarInicial: 90,
-                costoAlquiler: 450,
-                desc: "Auxiliar de rampa en el aeropuerto. Vive en SJL. Asume alquiler completo y traslados extensos.",
-                statsText: "• Ingreso Mensual: S/ 1,025\n• Alquiler Mensual: S/ 450\n• Ventaja: Crédito bancario accesible por nómina.\n• Desafío: 3.5h de transporte diario y costo total de alquiler independiente."
+                cansancioInicial: 0,
+                redInicial: 80,
+                desc: "Auxiliar de rampa en el aeropuerto. Vive en SJL. Asume alquiler de cuarto y traslados extensos.",
+                statsText: "• Ingreso Mensual: S/ 1,025\n• Alquiler Mensual: S/ 350\n• Alimentación Base: ~S/ 900/mes (~S/ 30 diarios fuera)."
             },
             "Maria": {
                 nombre: "María (31 años)",
-                avatar: "🛒",
-                ingresoMensual: 1200,
-                billeteraInicial: 1200,
-                saludInicial: 85,
-                cansancioInicial: 20,
-                redFamiliarInicial: 100,
-                costoAlquiler: 500,
-                desc: "Comerciante en mercado de SMP y madre soltera. Afronta dobles gastos familiares y falta de seguro de ley.",
-                statsText: "• Ingreso Mensual: S/ 1,200\n• Alquiler Mensual: S/ 500\n• Ventaja: Mayor flujo diario por ventas.\n• Desafío: Cero beneficios de ley y mayor gasto en alimentación/salud."
+                distrito: "SAN MARTIN DE PORRES",
+                transporteDefecto: "MOTOTAXI / BUS",
+                avatar: "👩",
+                ingreso: 1200,
+                alquiler: 400,
+                saludInicial: 90,
+                cansancioInicial: 10,
+                redInicial: 90,
+                desc: "Comerciante en mercado de SMP y madre soltera. Afronta dobles gastos familiares sin seguro de ley.",
+                statsText: "• Ingreso Mensual: S/ 1,200\n• Alquiler Mensual: S/ 400\n• Alimentación Base: ~S/ 950/mes por dependientes."
             },
             "Mario": {
                 nombre: "Mario (45 años)",
-                avatar: "🛠️",
-                ingresoMensual: 950,
-                billeteraInicial: 950,
-                saludInicial: 75,
-                cansancioInicial: 25,
-                redFamiliarInicial: 80,
-                costoAlquiler: 380,
-                desc: "Técnico 'Mil Oficios' de Ate. Habilidad técnica alta pero inestabilidad de ingresos.",
-                statsText: "• Ingreso Mensual: S/ 950\n• Alquiler Mensual: S/ 380\n• Ventaja: Reparaciones del hogar a costo cero.\n• Desventaja: Salud vulnerable y riesgo de préstamos 'Gota a Gota'."
+                distrito: "ATE VITARTE",
+                transporteDefecto: "MOTOTAXI / A PIE",
+                avatar: "👨",
+                ingreso: 950,
+                alquiler: 300,
+                saludInicial: 80,
+                cansancioInicial: 20,
+                redInicial: 70,
+                desc: "Técnico 'Mil Oficios' de Ate. Habilidad técnica pero vulnerabilidad e inestabilidad económica.",
+                statsText: "• Ingreso Mensual: S/ 950\n• Alquiler Mensual: S/ 300\n• Alimentación Base: ~S/ 850/mes."
             }
         };
 
-        // Generador dinámico de 48 Eventos Semanales (4 por mes)
-        function generarBanco48Eventos() {
-            let eventos = [];
-            let semCount = 1;
+        let bancoEventos = [];
 
-            for (let m = 0; m < 12; m++) {
-                let mesNom = mesesNombres[m];
+        for (let m = 1; m <= 12; m++) {
+            for (let s = 1; s <= 4; s++) {
+                let semAbs = (m - 1) * 4 + s;
                 
-                // Semana 1: Transporte / Logística urbana
-                eventos.push({
-                    semana: semCount++, mes: m + 1, semMes: 1,
-                    titulo: `${mesNom} - S1: DESPLAZAMIENTO LABORAL`,
-                    descripcion: `Empieza ${mesNom}. Obras y alto tráfico congestionan las rutas principales de Lima.`,
-                    opciones: [
-                        { titulo: "🚌 Bus Tradicional", subtitulo: "Viajas 3.5 horas apretado. (-S/ 12 Transp., +20% Cansancio)", efectos: { billetera: -12, gastoTransp: 12, cansancio: 20 } },
-                        { titulo: "🛺 Mototaxi + Colectivo", subtitulo: "Llegas puntual con costo moderado. (-S/ 28 Transp., +5% Cansancio)", efectos: { billetera: -28, gastoTransp: 28, cansancio: 5 } },
-                        { titulo: "🚕 Taxi por App", subtitulo: "Viajas cómodo y directo. (-S/ 60 Transp., -10% Cansancio)", efectos: { billetera: -60, gastoTransp: 60, cansancio: -10 } }
-                    ]
-                });
-
-                // Semana 2: Alimentación / Canasta de compra
-                eventos.push({
-                    semana: semCount++, mes: m + 1, semMes: 2,
-                    titulo: `${mesNom} - S2: ABASTECIMIENTO DE COMIDA`,
-                    descripcion: "Es momento de comprar los víveres para la alimentación de la semana.",
-                    opciones: [
-                        { titulo: "🥦 Mercado popular estricto", subtitulo: "Canasta mínima económica. (-S/ 90 Alim., -5% Salud)", efectos: { billetera: -90, gastoAlim: 90, salud: -5 } },
-                        { titulo: "🍖 Compra balanceada en bodegas", subtitulo: "Buena nutrición. (-S/ 160 Alim., +5% Salud)", efectos: { billetera: -160, gastoAlim: 160, salud: 5 } },
-                        { titulo: "🍜 Menú barato y procesado", subtitulo: "Comida rápida muy económica. (-S/ 60 Alim., -10% Salud)", efectos: { billetera: -60, gastoAlim: 60, salud: -10 } }
-                    ]
-                });
-
-                // Semana 3: Entorno Social / Red Familiar / Salud
-                eventos.push({
-                    semana: semCount++, mes: m + 1, semMes: 3,
-                    titulo: `${mesNom} - S3: COMPROMISO / ASISTENCIA FAMILIAR`,
-                    descripcion: "Un familiar cercano requiere apoyo o te invita a una reunión importante.",
-                    opciones: [
-                        { titulo: "🤝 Apoyar y asistir a la reunión", subtitulo: "Fortaleces tu respaldo familiar. (-S/ 70 Varios, +15% Red Fam.)", efectos: { billetera: -70, gastoVarios: 70, redFamiliar: 15 } },
-                        { titulo: "🎁 Enviar una colaboración modesta", subtitulo: "Cumples sin gastar demasiado. (-S/ 30 Varios, +5% Red Fam.)", efectos: { billetera: -30, gastoVarios: 30, redFamiliar: 5 } },
-                        { titulo: "❌ Excusarte por motivos de dinero", subtitulo: "Guardas efectivo pero desgasta relaciones. (-15% Red Fam.)", efectos: { billetera: 0, redFamiliar: -15 } }
-                    ]
-                });
-
-                // Semana 4: Oportunidad de Cachuelo o Descanso (Previa al Cierre de Mes)
-                eventos.push({
-                    semana: semCount++, mes: m + 1, semMes: 4,
-                    titulo: `${mesNom} - S4: OPORTUNIDAD EXTRA DE FIN DE MES`,
-                    descripcion: "Cerrando el mes, te ofrecen realizar un trabajo extra el domingo.",
-                    opciones: [
-                        { titulo: "📦 Aceptar Cachuelo de 12 horas", subtitulo: "Ingreso extra para afrontar cuentas. (+S/ 140 Bill., +30% Cansancio)", efectos: { billetera: 140, cansancio: 30, salud: -5 } },
-                        { titulo: "⏱️ Apoyar solo medio turno", subtitulo: "Balanceas ingreso y desgaste. (+S/ 70 Bill., +10% Cansancio)", efectos: { billetera: 70, cansancio: 10 } },
-                        { titulo: "🛋️ Rechazar y descansar", subtitulo: "Recuperas energías para la salud. (-20% Cansancio, +5% Salud)", efectos: { billetera: 0, cansancio: -20, salud: 5 } }
-                    ]
-                });
+                if (s === 1) {
+                    bancoEventos.push({
+                        semana: semAbs, mes: m, semMes: s,
+                        titulo: `M${m} - S1: ALIMENTACIÓN Y TRÁFICO DE INICIO DE MES`,
+                        descripcion: "Compra de víveres o consumo en menú de calle (~S/ 30/día) más pasajes de la semana.",
+                        opciones: [
+                            { titulo: "🍲 Menú de calle diario + Bus público", subtitulo: "Comes fuera sin cocinar. (-S/ 225 Alimentación, -S/ 25 Pasaje, +10% Cansancio)", efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 10, red: 0 } },
+                            { titulo: "🥦 Cocinar en casa y llevar táper", subtitulo: "Ahorro al comprar en mercado pero requiere tiempo. (-S/ 140 Alimentación, -S/ 20 Pasaje, +15% Cansancio)", efectos: { gastAlim: 140, gastTransp: 20, salud: 5, cansancio: 15, red: 5 } },
+                            { titulo: "🛺 Comer menú caro + Taxi directo", subtitulo: "Mayor comodidad pero golpea el presupuesto semanal. (-S/ 300 Alimentación, -S/ 60 Pasaje, -10% Cansancio)", efectos: { gastAlim: 300, gastTransp: 60, salud: 0, cansancio: -10, red: 0 } }
+                        ]
+                    });
+                } else if (s === 2) {
+                    bancoEventos.push({
+                        semana: semAbs, mes: m, semMes: s,
+                        titulo: `M${m} - S2: ALIMENTACIÓN Y REUNIÓN FAMILIAR`,
+                        descripcion: "Comida semanal e imprevistos de integración con la familia o trabajo.",
+                        opciones: [
+                            { titulo: "🥘 Aportar a la comida familiar dominical", subtitulo: "Fortaleces tu red social. (-S/ 210 Alimentación, -S/ 15 Pasaje, +15% Red Familiar)", efectos: { gastAlim: 210, gastTransp: 15, salud: 0, cansancio: 0, red: 15 } },
+                            { titulo: "🍜 Menú económico estándar", subtitulo: "Mantiene la rutina semanal sin aportes. (-S/ 225 Alimentación, -S/ 25 Pasaje)", efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 0, red: 0 } },
+                            { titulo: "❌ Omitir reuniones y recortar comidas", subtitulo: "Reduces costo pero te aíslas. (-S/ 160 Alimentación, -S/ 15 Pasaje, -15% Red Familiar)", efectos: { gastAlim: 160, gastTransp: 15, salud: -5, cansancio: 5, red: -15 } }
+                        ]
+                    });
+                } else if (s === 3) {
+                    bancoEventos.push({
+                        semana: semAbs, mes: m, semMes: s,
+                        titulo: `M${m} - S3: SALUD Y ALIMENTACIÓN SEMANAL`,
+                        descripcion: "Mantenimiento del cuerpo, compra semanal de insumos de cocina o salud.",
+                        opciones: [
+                            { titulo: "💊 Comprar vitaminas/medicina + Menú casero", subtitulo: "Cuidas tu estado físico. (-S/ 240 Alimentación, -S/ 20 Pasaje, +10% Salud)", efectos: { gastAlim: 240, gastTransp: 20, salud: 10, cansancio: -5, red: 0 } },
+                            { titulo: "🍲 Menú regular de la esquina", subtitulo: "Alimentación normal de trabajo. (-S/ 225 Alimentación, -S/ 25 Pasaje)", efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 0, red: 0 } },
+                            { titulo: "📦 Trabajar cachuelo domingo cargando", subtitulo: "Ingreso extra para compensar gasto. (+S/ 120 Saldo, -S/ 200 Alim, +25% Cansancio)", efectos: { saldoExtra: 120, gastAlim: 200, gastTransp: 20, salud: -5, cansancio: 25, red: 0 } }
+                        ]
+                    });
+                } else {
+                    bancoEventos.push({
+                        semana: semAbs, mes: m, semMes: s,
+                        titulo: `M${m} - S4: CIERRE ALIMENTARIO Y PREPARACIÓN DE CUENTAS`,
+                        descripcion: "Última semana del mes antes de la liquidación de pago de alquiler.",
+                        opciones: [
+                            { titulo: "🥦 Comprar despensa balanceada de cierre", subtitulo: "Cierras el mes bien nutrido. (-S/ 225 Alimentación, -S/ 25 Pasaje)", efectos: { gastAlim: 225, gastTransp: 25, salud: 5, cansancio: 0, red: 0 } },
+                            { titulo: "🍞 Dieta estricta de pan y té al final", subtitulo: "Maximizas saldo para pagar el alquiler. (-S/ 120 Alimentación, -S/ 15 Pasaje, -10% Salud)", efectos: { gastAlim: 120, gastTransp: 15, salud: -10, cansancio: 10, red: 0 } },
+                            { titulo: "🤝 Comer en casa de parientes", subtitulo: "Ahorras en comida pero requiere transporte. (-S/ 80 Alimentación, -S/ 35 Pasaje, +10% Red)", efectos: { gastAlim: 80, gastTransp: 35, salud: 0, cansancio: 5, red: 10 } }
+                        ]
+                    });
+                }
             }
-
-            return eventos;
         }
-
-        const bancoEventos = generarBanco48Eventos();
 
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
@@ -562,14 +731,17 @@
         function selectChar(key) {
             gameState.characterKey = key;
             document.querySelectorAll('.char-btn').forEach(btn => btn.classList.remove('selected'));
-            event.target.classList.add('selected');
+            
+            if (key === 'Tony') document.getElementById('btn-tony').classList.add('selected');
+            if (key === 'Maria') document.getElementById('btn-maria').classList.add('selected');
+            if (key === 'Mario') document.getElementById('btn-mario').classList.add('selected');
         }
 
         function goToMenu() { showScreen('screen-menu'); }
 
         function goToBio() {
             const inputVal = document.getElementById('input-name').value.trim();
-            gameState.playerName = inputVal !== "" ? inputVal : "Jugador";
+            gameState.playerName = inputVal !== "" ? inputVal : "André";
 
             const data = personajesData[gameState.characterKey];
             document.getElementById('bio-title').innerText = data.nombre;
@@ -582,55 +754,54 @@
 
         function startGame() {
             const data = personajesData[gameState.characterKey];
-            gameState.ingresoMensual = data.ingresoMensual;
-            gameState.billetera = data.billeteraInicial;
+            gameState.ingresoMensual = data.ingreso;
+            gameState.saldo = data.ingreso;
             gameState.deuda = 0;
             gameState.salud = data.saludInicial;
             gameState.cansancio = data.cansancioInicial;
-            gameState.redFamiliar = data.redFamiliarInicial;
-            gameState.costoAlquilerMensual = data.costoAlquiler;
-            gameState.deudaAlquiler = 0;
-            gameState.mesesAdeudadosRenta = 0;
+            gameState.redFamiliar = data.redInicial;
+            gameState.alquilerCosto = data.alquiler;
+            gameState.alquilerAdeudado = 0;
+            gameState.mesesRentaSinPagar = 0;
+            
+            gameState.mesActual = 1;
             gameState.semanaAbsoluta = 1;
+            resetMonthlyTrackers();
 
-            resetGastosMes();
             renderHUD();
             renderEvent();
             showScreen('screen-game');
         }
 
-        function resetGastosMes() {
-            gameState.gastosMes = {
-                transporte: 0,
-                alimentacion: 0,
-                servicios: 120, // Fijo mensual básico
-                varios: 0
-            };
+        function resetMonthlyTrackers() {
+            gameState.gastosAlimMes = 0;
+            gameState.gastosTranspMes = 0;
+            gameState.gastosServMes = 80;
         }
 
         function renderHUD() {
-            const ev = bancoEventos.find(e => e.semana === gameState.semanaAbsoluta);
-            const mesIndex = ev ? ev.mes - 1 : 11;
-            const mesTxt = ev ? `${mesesNombres[mesIndex]} • S${ev.semMes}` : "FINAL";
+            const data = personajesData[gameState.characterKey];
+            document.getElementById('hud-month-num').innerText = gameState.mesActual;
+            document.getElementById('hud-user-fullname').innerText = `${gameState.playerName.toUpperCase()} - ${gameState.characterKey.toUpperCase()}`;
+            document.getElementById('hud-user-district').innerHTML = `${data.distrito} <span>${data.transporteDefecto}</span>`;
+            document.getElementById('hud-avatar-icon').innerText = data.avatar;
 
-            document.getElementById('hud-name').innerText = `${gameState.playerName.toUpperCase()} - ${gameState.characterKey.toUpperCase()}`;
-            document.getElementById('hud-time').innerText = mesTxt;
-            document.getElementById('hud-income').innerText = `S/ ${gameState.ingresoMensual}`;
-            document.getElementById('hud-money').innerText = `S/ ${gameState.billetera}`;
-            document.getElementById('hud-debt').innerText = `S/ ${gameState.deuda}`;
-            document.getElementById('hud-health').innerText = `${gameState.salud}%`;
-            document.getElementById('hud-fatigue').innerText = `${gameState.cansancio}%`;
-            document.getElementById('hud-family').innerText = `${gameState.redFamiliar}%`;
+            document.getElementById('hud-sueldo').innerText = `S/ ${gameState.ingresoMensual}`;
+            document.getElementById('hud-saldo').innerText = `S/ ${gameState.saldo}`;
+            document.getElementById('hud-deuda').innerText = `S/ ${gameState.deuda}`;
+            
+            document.getElementById('hud-g-alquiler').innerText = `S/ ${gameState.alquilerCosto + gameState.alquilerAdeudado}`;
+            document.getElementById('hud-g-alim').innerText = `S/ ${gameState.gastosAlimMes}`;
+            document.getElementById('hud-g-transp').innerText = `S/ ${gameState.gastosTranspMes}`;
+            document.getElementById('hud-g-serv').innerText = `S/ ${gameState.gastosServMes}`;
 
-            // Calcular total acumulado de gastos en el mes actual
-            const subtotalGastos = gameState.gastosMes.transporte + gameState.gastosMes.alimentacion + gameState.gastosMes.servicios + gameState.gastosMes.varios;
-            document.getElementById('hud-month-expenses').innerText = `S/ ${subtotalGastos}`;
-            document.getElementById('hud-rent-status').innerText = `${gameState.mesesAdeudadosRenta} Meses (S/ ${gameState.deudaAlquiler})`;
+            document.getElementById('hud-pct-salud').innerText = `${gameState.salud}%`;
+            document.getElementById('hud-pct-cansancio').innerText = `${gameState.cansancio}%`;
+            document.getElementById('hud-pct-red').innerText = `${gameState.redFamiliar}%`;
         }
 
         function renderEvent() {
-            // Verificar condiciones de derrota inmediata
-            if (gameState.salud <= 0 || gameState.redFamiliar <= 0 || gameState.deuda > 600 || gameState.mesesAdeudadosRenta >= 3) {
+            if (gameState.deuda > 600 || gameState.salud <= 0 || gameState.redFamiliar <= 0 || gameState.mesesRentaSinPagar >= 3) {
                 finishGame();
                 return;
             }
@@ -660,26 +831,32 @@
         }
 
         function applyDecision(efectos) {
-            gameState.billetera += efectos.billetera || 0;
-            
-            // Acumuladores de gastos del mes
-            if (efectos.gastoTransp) gameState.gastosMes.transporte += efectos.gastoTransp;
-            if (efectos.gastoAlim) gameState.gastosMes.alimentacion += efectos.gastoAlim;
-            if (efectos.gastoVarios) gameState.gastosMes.varios += efectos.gastoVarios;
+            if (efectos.saldoExtra) gameState.saldo += efectos.saldoExtra;
+            if (efectos.gastAlim) {
+                gameState.saldo -= efectos.gastAlim;
+                gameState.gastosAlimMes += efectos.gastAlim;
+            }
+            if (efectos.gastTransp) {
+                gameState.saldo -= efectos.gastTransp;
+                gameState.gastosTranspMes += efectos.gastTransp;
+            }
+
+            if (gameState.saldo < 0) {
+                const deficit = Math.abs(gameState.saldo);
+                gameState.deuda += Math.round(deficit * 1.15);
+                gameState.saldo = 0;
+            }
 
             gameState.salud = Math.min(100, Math.max(0, gameState.salud + (efectos.salud || 0)));
             gameState.cansancio = Math.min(100, Math.max(0, gameState.cansancio + (efectos.cansancio || 0)));
-            gameState.redFamiliar = Math.min(100, Math.max(0, gameState.redFamiliar + (efectos.redFamiliar || 0)));
+            gameState.redFamiliar = Math.min(100, Math.max(0, gameState.redFamiliar + (efectos.red || 0)));
 
-            // Castigo por Cansancio Máximo (100%)
             if (gameState.cansancio >= 100) {
                 gameState.salud = Math.max(0, gameState.salud - 15);
             }
 
-            // Comprobar si terminamos la Semana 4 del Mes -> Abrir Liquidación de Cierre de Mes
-            const evActual = bancoEventos.find(e => e.semana === gameState.semanaAbsoluta);
-            if (evActual && evActual.semMes === 4) {
-                openMonthlySettlement(evActual.mes);
+            if (gameState.semanaAbsoluta % 4 === 0) {
+                openMonthClosingScreen();
             } else {
                 gameState.semanaAbsoluta++;
                 renderHUD();
@@ -687,114 +864,129 @@
             }
         }
 
-        // Pantalla Especial de Cierre de Mes (Liquidación)
-        function openMonthlySettlement(numMes) {
-            const mesNom = mesesNombres[numMes - 1];
-            document.getElementById('settlement-month-title').innerText = `CIERRE DE ${mesNom}`;
+        function openMonthClosingScreen() {
+            gameState.saldo -= gameState.gastosServMes;
+            if (gameState.saldo < 0) {
+                gameState.deuda += Math.abs(gameState.saldo);
+                gameState.saldo = 0;
+            }
+
+            const totalRentOwed = gameState.alquilerCosto + gameState.alquilerAdeudado;
+
+            document.getElementById('close-hud-sueldo').innerText = `S/ ${gameState.ingresoMensual}`;
+            document.getElementById('close-hud-saldo').innerText = `S/ ${gameState.saldo}`;
+            document.getElementById('close-hud-deuda').innerText = `S/ ${gameState.deuda}`;
+            document.getElementById('close-hud-salud').innerText = `${gameState.salud}%`;
+            document.getElementById('close-hud-cansancio').innerText = `${gameState.cansancio}%`;
+            document.getElementById('close-hud-red').innerText = `${gameState.redFamiliar}%`;
+
+            document.getElementById('bill-alim').innerText = `S/ ${gameState.gastosAlimMes}`;
+            document.getElementById('bill-transp').innerText = `S/ ${gameState.gastosTranspMes}`;
+            document.getElementById('bill-serv').innerText = `S/ ${gameState.gastosServMes}`;
+            document.getElementById('bill-rent-cost').innerText = `S/ ${gameState.alquilerCosto}`;
+            document.getElementById('bill-rent-due').innerText = `S/ ${gameState.alquilerAdeudado}`;
+            document.getElementById('bill-rent-total').innerText = `S/ ${totalRentOwed}`;
+
+            document.getElementById('max-pay-allowed').innerText = totalRentOwed;
             
-            document.getElementById('exp-transport').innerText = `S/ ${gameState.gastosMes.transporte}`;
-            document.getElementById('exp-food').innerText = `S/ ${gameState.gastosMes.alimentacion}`;
-            document.getElementById('exp-services').innerText = `S/ ${gameState.gastosMes.servicios}`;
-            document.getElementById('exp-misc').innerText = `S/ ${gameState.gastosMes.varios}`;
+            const inputPay = document.getElementById('input-pay-amount');
+            inputPay.max = totalRentOwed;
+            inputPay.value = Math.min(totalRentOwed, gameState.saldo);
 
-            const subtotal = gameState.gastosMes.transporte + gameState.gastosMes.alimentacion + gameState.gastosMes.servicios + gameState.gastosMes.varios;
-            document.getElementById('exp-subtotal').innerText = `S/ ${subtotal}`;
-
-            // Actualizar info de alquiler
-            const totalRentaPendiente = gameState.deudaAlquiler + gameState.costoAlquilerMensual;
-            document.getElementById('rent-info-text').innerText = `Alquiler mensual: S/ ${gameState.costoAlquilerMensual}. Total adeudado acumulado: S/ ${totalRentaPendiente}.`;
-            document.getElementById('input-rent-pay').value = gameState.costoAlquilerMensual;
-            document.getElementById('rent-warning-text').innerText = gameState.mesesAdeudadosRenta > 0 ? `⚠️ Tienes ${gameState.mesesAdeudadosRenta} mes(es) sin pagar. ¡Llegar a 3 causa desahucio!` : '';
-
-            showScreen('screen-monthly-settlement');
+            document.getElementById('pay-error').classList.add('hidden');
+            showScreen('screen-month-closing');
         }
 
-        function confirmMonthlySettlement() {
-            const montoPagoAlquiler = parseInt(document.getElementById('input-rent-pay').value) || 0;
-            const subtotalGastosVariables = gameState.gastosMes.transporte + gameState.gastosMes.alimentacion + gameState.gastosMes.servicios + gameState.gastosMes.varios;
+        function submitMonthClosing() {
+            const inputPay = document.getElementById('input-pay-amount');
+            const errorEl = document.getElementById('pay-error');
+            let payAmount = parseFloat(inputPay.value);
 
-            // Descontar subtotal de gastos del mes de la billetera
-            gameState.billetera -= subtotalGastosVariables;
+            if (isNaN(payAmount) || payAmount < 0) payAmount = 0;
+            const totalRentOwed = gameState.alquilerCosto + gameState.alquilerAdeudado;
 
-            // Procesar el pago del alquiler
-            const totalAdeudadoRenta = gameState.deudaAlquiler + gameState.costoAlquilerMensual;
-            
-            if (montoPagoAlquiler >= totalAdeudadoRenta) {
-                gameState.billetera -= montoPagoAlquiler;
-                gameState.deudaAlquiler = 0;
-                gameState.mesesAdeudadosRenta = 0;
+            if (payAmount > totalRentOwed) {
+                errorEl.innerText = `⚠️ No puedes pagar más del total adeudado (Máximo S/ ${totalRentOwed}).`;
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            if (payAmount > gameState.saldo) {
+                const deficit = payAmount - gameState.saldo;
+                gameState.deuda += Math.round(deficit * 1.2);
+                gameState.saldo = 0;
             } else {
-                gameState.billetera -= montoPagoAlquiler;
-                gameState.deudaAlquiler = totalAdeudadoRenta - montoPagoAlquiler;
-                gameState.mesesAdeudadosRenta += 1;
+                gameState.saldo -= payAmount;
             }
 
-            // Si la billetera queda en negativo, el saldo negativo pasa a Deuda informal
-            if (gameState.billetera < 0) {
-                const deficit = Math.abs(gameState.billetera);
-                gameState.deuda += Math.round(deficit * 1.25); // Interés por préstamo urgente
-                gameState.billetera = 0;
+            const remanente = totalRentOwed - payAmount;
+            if (remanente > 0) {
+                gameState.alquilerAdeudado = remanente;
+                gameState.mesesRentaSinPagar++;
+            } else {
+                gameState.alquilerAdeudado = 0;
+                gameState.mesesRentaSinPagar = 0;
             }
 
-            // Regla Estricta: Si se acumulan 3 meses de renta adeudada, el sistema intenta cobrarlos automáticamente
-            if (gameState.mesesAdeudadosRenta >= 3) {
-                if (gameState.billetera >= gameState.deudaAlquiler) {
-                    gameState.billetera -= gameState.deudaAlquiler;
-                    gameState.deudaAlquiler = 0;
-                    gameState.mesesAdeudadosRenta = 0;
+            if (gameState.mesesRentaSinPagar >= 3) {
+                if (gameState.saldo >= gameState.alquilerAdeudado) {
+                    gameState.saldo -= gameState.alquilerAdeudado;
+                    gameState.alquilerAdeudado = 0;
+                    gameState.mesesRentaSinPagar = 0;
                 } else {
-                    // Pierde automáticamente por desalojo
-                    finishGame();
+                    finishGame("DESAHUCIO");
                     return;
                 }
             }
 
-            // Depósito del Salario del Nuevo Mes (si no es el mes 12)
-            if (gameState.semanaAbsoluta < 48) {
-                gameState.billetera += gameState.ingresoMensual;
-            }
-
+            gameState.mesActual++;
             gameState.semanaAbsoluta++;
-            resetGastosMes();
-            renderHUD();
-            renderEvent();
-            showScreen('screen-game');
+
+            if (gameState.mesActual <= 12) {
+                gameState.saldo += gameState.ingresoMensual;
+                resetMonthlyTrackers();
+                renderHUD();
+                renderEvent();
+                showScreen('screen-game');
+            } else {
+                finishGame("COMPLETADO");
+            }
         }
 
-        function finishGame() {
+        function finishGame(reasonOverride) {
             const statusEl = document.getElementById('result-status');
             const textEl = document.getElementById('result-text');
             const statsEl = document.getElementById('result-stats');
 
-            if (gameState.mesesAdeudadosRenta >= 3) {
-                statusEl.innerText = "🏚️ DESAHUCIO POR FALTA DE PAGO";
+            if (reasonOverride === "DESAHUCIO" || gameState.mesesRentaSinPagar >= 3) {
+                statusEl.innerText = "🏠 DESAHUCIO / DESALOJO";
                 statusEl.style.color = "#ff3b30";
-                textEl.innerText = `${gameState.playerName}, acumulaste 3 meses consecutivos sin pagar la renta de la vivienda. El propietario procedió con el desalojo y perdiste tu lugar de residencia.`;
+                textEl.innerText = `${gameState.playerName}, acumulaste 3 meses de alquiler sin pagar. El dueño de la propiedad tomó posesión del inmueble.`;
+            } else if (gameState.deuda > 600) {
+                statusEl.innerText = "❌ QUIEBRA POR DEUDA";
+                statusEl.style.color = "#ff3b30";
+                textEl.innerText = `${gameState.playerName}, acumulaste S/ ${gameState.deuda} en deudas informales e intereses fuera de control.`;
             } else if (gameState.salud <= 0) {
                 statusEl.innerText = "🏥 COLAPSO DE SALUD";
                 statusEl.style.color = "#ff3b30";
-                textEl.innerText = `${gameState.playerName}, el desgaste físico acumulado redujo tu salud al 0%. Caíste hospitalizado sin poder continuar laborando.`;
+                textEl.innerText = `${gameState.playerName}, el desgaste físico acumulado redujo tu salud a 0%. Fuiste internado de emergencia.`;
             } else if (gameState.redFamiliar <= 0) {
-                statusEl.innerText = "💔 COLAPSO DE RED FAMILIAR";
-                statusEl.style.color = "#ea80fc";
-                textEl.innerText = `${gameState.playerName}, tu Red Familiar llegó al 0%. La falta de apoyo y el aislamiento social te dejaron sin respaldo emocional ni auxilio ante emergencias.`;
-            } else if (gameState.deuda > 600) {
-                statusEl.innerText = "❌ QUIEBRA FINANCIERA";
+                statusEl.innerText = "💔 COLAPSO RED FAMILIAR";
                 statusEl.style.color = "#ff3b30";
-                textEl.innerText = `${gameState.playerName}, acumulaste más de S/ 600 en deudas informales e intereses del 'Gota a Gota'. El cobro coercitivo te impidió continuar.`;
+                textEl.innerText = `${gameState.playerName}, aislaste por completo a tu entorno y perdiste todo tu respaldo social ante imprevistos.`;
             } else {
-                statusEl.innerText = "🎉 ¡1 AÑO SOBREVIVIDO!";
+                statusEl.innerText = "🎉 ¡1 AÑO SUPERADO!";
                 statusEl.style.color = "#4cd964";
-                textEl.innerText = `¡Extraordinario logro, ${gameState.playerName}! Lograste administrar tu ingreso mínimo durante los 12 meses del año completo (48 semanas).`;
+                textEl.innerText = `¡Felicidades, ${gameState.playerName}! Lograste sobrevivir los 12 meses completos del año administrando tu salario mínimo en Lima.`;
             }
 
             statsEl.innerHTML = `
-                • <b>Billetera Final:</b> S/ ${gameState.billetera}<br>
-                • <b>Deuda Informal:</b> S/ ${gameState.deuda}<br>
-                • <b>Deuda de Alquiler:</b> S/ ${gameState.deudaAlquiler} (${gameState.mesesAdeudadosRenta} meses adeudados)<br>
-                • <b>Salud Final:</b> ${gameState.salud}% | <b>Cansancio:</b> ${gameState.cansancio}%<br>
+                • <b>Saldo Final (Billetera):</b> S/ ${gameState.saldo}<br>
+                • <b>Deuda Acumulada:</b> S/ ${gameState.deuda}<br>
+                • <b>Salud Final:</b> ${gameState.salud}%<br>
+                • <b>Cansancio Final:</b> ${gameState.cansancio}%<br>
                 • <b>Red Familiar Final:</b> ${gameState.redFamiliar}%<br>
-                • <b>Semanas Completadas:</b> ${Math.min(48, gameState.semanaAbsoluta - 1)} / 48
+                • <b>Meses Sobrevividos:</b> ${Math.min(12, gameState.mesActual - 1)} / 12
             `;
 
             showScreen('screen-result');
