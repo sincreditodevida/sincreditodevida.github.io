@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sin Crédito de Vida - Simulador</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Teko:wght@600;700&display=swap');
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,76 +15,167 @@
         }
 
         body {
-            background-color: #000000;
+            background-color: #0b0c10;
             color: #ffffff;
             display: flex;
             justify-content: center;
             min-height: 100vh;
         }
 
+        /* Contenedor principal con ancho ajustado */
         .app-container {
             width: 100%;
-            max-width: 440px;
+            max-width: 380px;
             background-color: #121418;
             display: flex;
             flex-direction: column;
-            padding: 14px;
-            gap: 12px;
+            padding: 12px;
+            gap: 10px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.95);
             border-left: 1px solid #1e222a;
             border-right: 1px solid #1e222a;
+            position: relative;
+            overflow-y: auto;
         }
 
         .screen {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
         }
 
         .hidden { display: none !important; }
 
-        .title-header {
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            color: #ffffff;
-            border-bottom: 2px solid #2e7d32;
-            padding-bottom: 6px;
-            text-transform: uppercase;
-        }
-
-        .card-panel {
-            background-color: #1a1d24;
-            border: 1px solid #282c36;
-            border-radius: 12px;
-            padding: 14px;
+        /* PORTADA TIPO IMAGEN DE REFERENCIA CON BORDES REDONDEADOS */
+        .portada-bg {
+            background: linear-gradient(rgba(18,20,24,0.65), rgba(18,20,24,0.95)), url('https://funko0.wordpress.com/wp-content/uploads/2026/11/sin-credito-de-vida-fondo.jpg') center/cover;
+            border-radius: 16px;
+            padding: 14px 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 1px;
+            border: 1px solid #282c36;
+            align-items: center;
+        }
+
+        /* BOTONES DE NAVEGACIÓN SUPERIOR (PRINCIPAL Y LIBRE) */
+        .top-nav-mode {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px;
+            border-radius: 20px;
+            border: 1px solid #282c36;
+            width: fit-content;
+        }
+
+        .mode-btn {
+            background: #d63031;
+            color: #fff;
+            padding: 4px 14px;
+            border-radius: 14px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+
+        .mode-btn.disabled {
+            background: transparent;
+            color: #718096;
+            cursor: not-allowed;
+            border: 1px dashed #4a5568;
+        }
+
+        /* BANNER Y PLACEHOLDER DE IMAGEN DE TÍTULO / LOGO */
+        .game-title-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 6px 0;
+        }
+
+        .title-logo-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            cursor: pointer;
+            display: block;
+        }
+
+        /* SELECTOR DE IDIOMAS CON BANDERAS EN IMAGEN */
+        .lang-selector-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px 12px;
+            border-radius: 16px;
+            border: 1px solid #282c36;
+        }
+
+        .lang-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .lang-item.inactive {
+            color: #718096;
+        }
+
+        .flag-icon {
+            width: 18px;
+            height: 12px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        /* CARD PANELS REDONDEADOS TIPO INTERFAZ */
+        .card-panel {
+            background-color: rgba(22, 25, 32, 0.95);
+            border: 1px solid #282c36;
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .card-title {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: #8892b0;
             text-transform: uppercase;
             font-weight: bold;
             letter-spacing: 1px;
+            text-align: center;
         }
 
         input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 10px 12px;
-            background-color: #0d0f12;
-            border: 1px solid #333a48;
+            padding: 10px;
+            background-color: #0c0e11;
+            border: 1px solid #2e3545;
             border-radius: 8px;
             color: #fff;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             outline: none;
+            text-align: center;
         }
 
-        input:focus { border-color: #4cd964; }
+        input:focus { border-color: #d63031; }
 
         .character-selector {
             display: grid;
@@ -92,34 +185,37 @@
 
         .char-btn {
             background-color: #121418;
-            border: 1px solid #282c36;
-            border-radius: 8px;
-            padding: 12px 4px;
+            border: 2px solid #2e3545;
+            border-radius: 10px;
+            padding: 12px 2px;
             color: #fff;
-            font-weight: bold;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
             cursor: pointer;
             text-align: center;
             transition: all 0.2s;
-            font-size: 0.85rem;
         }
 
         .char-btn.selected {
-            border-color: #4cd964;
-            background-color: #2e7d32;
-            color: #fff;
+            border-color: #d63031;
+            background-color: #1c202a;
+            box-shadow: 0 0 10px rgba(214, 48, 49, 0.35);
         }
 
         .main-btn {
-            background-color: #4cd964;
-            color: #000;
-            font-weight: 800;
-            font-size: 0.95rem;
+            background-color: #e63946;
+            color: #fff;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
             border: none;
-            padding: 14px;
-            border-radius: 10px;
+            padding: 8px;
+            border-radius: 12px;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            text-align: center;
             transition: transform 0.1s;
         }
 
@@ -135,15 +231,15 @@
             font-weight: bold;
         }
 
-        /* HUD ESTILO NSS / PRO */
+        /* HUD SUPERIOR */
         .hud-nss-card {
             background-color: #1a1d24;
             border: 1px solid #282c36;
-            border-radius: 16px;
-            padding: 12px;
+            border-radius: 14px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .nss-top-header {
@@ -160,31 +256,31 @@
         }
 
         .nss-month-num {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 900;
             color: #ffffff;
         }
 
         .nss-month-lbl {
-            font-size: 0.6rem;
+            font-size: 0.58rem;
             color: #8892b0;
             font-weight: bold;
         }
 
         .nss-user-info {
             flex-grow: 1;
-            margin-left: 12px;
+            margin-left: 10px;
         }
 
         .nss-user-name {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 900;
             color: #ffffff;
             letter-spacing: 0.5px;
         }
 
         .nss-user-sub {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #8892b0;
             font-weight: 600;
         }
@@ -195,80 +291,50 @@
         }
 
         .nss-avatar {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background-color: #282c36;
             border: 2px solid #e63946;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
         }
 
-        /* Filas de Cajas de Métricas */
-        .nss-grid-row-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-        }
-
-        .nss-grid-row-5 {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
-        }
-
-        .nss-grid-row-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-        }
+        .nss-grid-row-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .nss-grid-row-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+        .nss-grid-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
 
         .nss-box {
             background-color: #121418;
-            border-radius: 8px;
-            padding: 6px 2px;
+            border-radius: 6px;
+            padding: 5px 2px;
             border: 1px solid #242832;
             text-align: center;
         }
 
-        .nss-box-val {
-            font-size: 0.85rem;
-            font-weight: 900;
-            margin-top: 1px;
-        }
-
-        .nss-box-lbl {
-            font-size: 0.52rem;
-            color: #8892b0;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
+        .nss-box-val { font-size: 0.8rem; font-weight: 900; margin-top: 1px; }
+        .nss-box-lbl { font-size: 0.5rem; color: #8892b0; text-transform: uppercase; font-weight: bold; }
 
         .val-sueldo { color: #4cd964; }
         .val-saldo { color: #ffffff; }
         .val-deuda { color: #ff3b30; }
         .val-credito { color: #6c757d; }
 
-        /* Barra de Puntos y Botones Laterales */
-        .nss-bottom-area {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
+        .nss-bottom-area { display: flex; gap: 8px; align-items: center; }
 
         .nss-progress-section {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .nss-progress-title {
             display: flex;
             justify-content: space-between;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: bold;
             color: #8892b0;
         }
@@ -277,108 +343,123 @@
             display: flex;
             justify-content: space-between;
             padding: 0 4px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        .nss-side-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        .nss-side-buttons { display: flex; flex-direction: column; gap: 4px; }
 
         .nss-icon-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
             border: 1px solid #282c36;
             background-color: #121418;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .nss-icon-btn.active {
-            border-color: #4cd964;
-            background-color: #1e3a29;
-            opacity: 1;
+            font-size: 1rem;
             cursor: pointer;
         }
 
-        .nss-icon-btn.bag {
-            border-color: #e5a93c;
-            background-color: #382c16;
-            opacity: 1;
-        }
+        .nss-icon-btn.bag { border-color: #e5a93c; background-color: #382c16; }
+        .nss-icon-btn.store { border-color: #4cd964; background-color: #1e3a29; }
 
         .nss-footer-btn {
             background-color: #1c2028;
             border: 1px solid #282c36;
             color: #8892b0;
-            padding: 6px;
-            border-radius: 8px;
-            font-size: 0.7rem;
+            padding: 5px;
+            border-radius: 6px;
+            font-size: 0.65rem;
             font-weight: bold;
             text-align: center;
             text-transform: uppercase;
         }
 
-        /* Opciones de Eventos */
-        .options-list {
+        /* TARJETAS DE DECISIÓN DE EVENTOS */
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .opt-card {
+            background-color: #161a22;
+            border: 1px solid #2a2f3d;
+            border-left: 5px solid #4cd964;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .opt-btn {
-            background-color: #121418;
-            border: 1px solid #282c36;
-            border-radius: 8px;
-            padding: 12px;
-            color: #fff;
-            text-align: left;
-            cursor: pointer;
-            transition: border-color 0.2s, background-color 0.2s;
-        }
-
-        .opt-btn:hover {
+        .opt-card:hover {
             border-color: #4cd964;
-            background-color: #1a1d24;
+            background-color: #1a1f2b;
         }
 
-        .opt-title { font-weight: bold; font-size: 0.85rem; margin-bottom: 3px; color: #ffffff; }
-        .opt-sub { font-size: 0.72rem; color: #8892b0; line-height: 1.3; }
+        .opt-tag {
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #e63946;
+        }
+
+        .opt-title {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .opt-sub { font-size: 0.74rem; color: #a0aec0; line-height: 1.25; }
+
+        .opt-effects-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+
+        .badge-effect {
+            background-color: #4cd964;
+            color: #000000;
+            font-size: 0.64rem;
+            font-weight: 900;
+            padding: 2px 5px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-effect.negative {
+            background-color: #ff3b30;
+            color: #ffffff;
+        }
 
         .avatar-box {
             width: 100%;
-            height: 90px;
+            height: 80px;
             background-color: #121418;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             border: 1px solid #282c36;
         }
 
-        /* Cierre de mes desglose */
         .bill-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.82rem;
-            padding: 4px 0;
+            font-size: 0.78rem;
+            padding: 3px 0;
             border-bottom: 1px dashed #282c36;
         }
 
         .bill-total {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             color: #4cd964;
-            padding-top: 6px;
+            padding-top: 4px;
         }
     </style>
 </head>
@@ -388,47 +469,81 @@
 
         <!-- ================= PANTALLA 1: MENÚ PRINCIPAL ================= -->
         <div id="screen-menu" class="screen">
-            <div class="title-header">Sin Crédito de Vida</div>
+            <div class="portada-bg">
+                
+                <!-- BOTONES SUPERIORES (PRINCIPAL Y LIBRE) -->
+                <div class="top-nav-mode">
+                    <button class="mode-btn" onclick="selectMode('principal')">PRINCIPAL</button>
+                    <button class="mode-btn disabled" title="Modo Bloqueado">LIBRE 🔒</button>
+                </div>
 
-            <div class="card-panel">
-                <div class="card-title">Reto de Supervivencia (1 Año / 12 Meses)</div>
-                <ul style="font-size: 0.78rem; color: #8892b0; padding-left: 16px; line-height: 1.4;">
-                    <li>Supera 48 semanas de imprevistos reales en Lima.</li>
-                    <li>Administra la alimentación realista (~S/ 900/mes) y el alquiler.</li>
-                    <li>Equilibra Salud, Cansancio y Red Familiar para no colapsar.</li>
-                </ul>
+                <!-- CONTENEDOR DE IMAGEN DEL TÍTULO / LOGO COMPLETO -->
+                <div class="game-title-container">
+                    <!-- Reemplaza la ruta 'src' por tu imagen de logo cuando la tengas lista -->
+                    <img id="img-title-logo" class="title-logo-img" src="https://funko0.wordpress.com/wp-content/uploads/2026/11/titulo-sin-credito-de-vida-1.png" alt="Sin Crédito de Vida Logo">
+                </div>
+
+                <!-- SELECTOR DE IDIOMAS CON BANDERAS EN IMAGEN -->
+                <div class="lang-selector-bar">
+                    <div class="lang-item">
+                        <img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt="España">
+                        <span>ES</span>
+                    </div>
+                    <div class="lang-item inactive">
+                        <img class="flag-icon" src="https://flagcdn.com/w40/gb.png" alt="Reino Unido">
+                        <span>EN</span>
+                    </div>
+                </div>
+
             </div>
 
             <div class="card-panel">
-                <div class="card-title">Tu Nombre</div>
-                <input type="text" id="input-name" placeholder="Ingresa tu nombre..." value="">
+                <div class="card-title" style="color: #ffffff; font-size: 0.8rem;">BONIFICACIONES • OBJETIVOS DEL MES</div>
+                <div style="font-size: 0.75rem; color: #a0aec0; display:flex; flex-direction:column; gap:5px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#121418; padding:5px 8px; border-radius:6px;">
+                        <span>1. Completa la historia principal de tu personaje.</span>
+                        <span style="color:#e63946; font-weight:bold;">🏅 1000</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#121418; padding:5px 8px; border-radius:6px;">
+                        <span>2. Compra al menos 4 mejoras durante tu partida.</span>
+                        <span style="color:#e63946; font-weight:bold;">🏅 1500</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#121418; padding:5px 8px; border-radius:6px;">
+                        <span>3. Termina el año sin deuda acumulada.</span>
+                        <span style="color:#e63946; font-weight:bold;">🏅 1200</span>
+                    </div>
+                </div>
             </div>
 
             <div class="card-panel">
-                <div class="card-title">Selecciona tu Perfil</div>
+                <div class="card-title">PRINCIPAL</div>
+                <input type="text" id="input-name" placeholder="Tu nombre..." value="André">
+                <p style="font-size: 0.68rem; color: #8892b0; text-align: center;">Coloca tu nombre para empezar.</p>
+            </div>
+
+            <div class="card-panel">
                 <div class="character-selector">
                     <button class="char-btn selected" id="btn-tony" onclick="selectChar('Tony')">TONY</button>
                     <button class="char-btn" id="btn-maria" onclick="selectChar('Maria')">MARÍA</button>
                     <button class="char-btn" id="btn-mario" onclick="selectChar('Mario')">MARIO</button>
                 </div>
+                <p style="font-size: 0.68rem; color: #8892b0; text-align: center; margin-top: 2px;">Selecciona el perfil con el que asumirás el reto.</p>
             </div>
 
-            <button class="main-btn" onclick="goToBio()">VER FICHA ➔</button>
+            <button class="main-btn" onclick="goToBio()">▶ JUGAR</button>
         </div>
 
         <!-- ================= PANTALLA 2: FICHA DE PERSONAJE ================= -->
         <div id="screen-bio" class="screen hidden">
-            <div class="title-header">Ficha del Perfil</div>
-
             <div class="card-panel">
                 <div class="avatar-box" id="bio-avatar">👦</div>
-                <h2 id="bio-title" style="color: #4cd964; text-align: center; margin-top: 4px; font-size: 1.2rem;">Tony (23)</h2>
-                <p id="bio-desc" style="font-size: 0.8rem; color: #8892b0; line-height: 1.35; text-align: justify;"></p>
+                <h2 id="bio-title" style="color: #4cd964; text-align: center; margin-top: 4px; font-family: 'Teko', sans-serif; font-size: 1.6rem; letter-spacing: 1px;">Tony (23)</h2>
+                <p id="bio-desc" style="font-size: 0.78rem; color: #8892b0; line-height: 1.35; text-align: justify;"></p>
             </div>
 
             <div class="card-panel">
                 <div class="card-title">Condiciones Iniciales</div>
-                <div style="font-size: 0.78rem; color: #ffffff; line-height: 1.5;" id="bio-stats"></div>
+                <div style="font-size: 0.75rem; color: #ffffff; line-height: 1.5;" id="bio-stats"></div>
             </div>
 
             <div style="display: flex; gap: 8px;">
@@ -437,25 +552,22 @@
             </div>
         </div>
 
-        <!-- ================= PANTALLA 3: SIMULADOR (GAMEPLAY HUD PRO) ================= -->
+        <!-- ================= PANTALLA 3: SIMULADOR ================= -->
         <div id="screen-game" class="screen hidden">
             
-            <!-- HUD SUPERIOR TIPO NSS / PRO -->
             <div class="hud-nss-card">
-                <!-- Fila 1: Mes, Nombre y Avatar -->
                 <div class="nss-top-header">
                     <div class="nss-month-badge">
                         <div class="nss-month-num" id="hud-month-num">1</div>
                         <div class="nss-month-lbl">MES</div>
                     </div>
                     <div class="nss-user-info">
-                        <div class="nss-user-name" id="hud-user-fullname"> - TONY</div>
+                        <div class="nss-user-name" id="hud-user-fullname">ANDRÉ - TONY</div>
                         <div class="nss-user-sub" id="hud-user-district">SAN JUAN DE LURIGANCHO <span>BUS / COLECTIVO</span></div>
                     </div>
                     <div class="nss-avatar" id="hud-avatar-icon">👦</div>
                 </div>
 
-                <!-- Fila 2: Sueldo, Saldo, Deuda, Crédito (Inactivo) -->
                 <div class="nss-grid-row-4">
                     <div class="nss-box">
                         <div class="nss-box-val val-sueldo" id="hud-sueldo">S/ 1025</div>
@@ -475,7 +587,6 @@
                     </div>
                 </div>
 
-                <!-- Fila 3: Alquiler, Alimentación, Transporte, Servicios, Mantenimiento -->
                 <div class="nss-grid-row-5">
                     <div class="nss-box">
                         <div class="nss-box-val" id="hud-g-alquiler">S/ 350</div>
@@ -499,7 +610,6 @@
                     </div>
                 </div>
 
-                <!-- Fila 4: Porcentajes (Salud, Cansancio, Red Familiar) -->
                 <div class="nss-grid-row-3">
                     <div class="nss-box">
                         <div class="nss-box-val" style="color:#34c759;" id="hud-pct-salud">100%</div>
@@ -515,7 +625,6 @@
                     </div>
                 </div>
 
-                <!-- Fila 5: Barra Crédito / Puntos y Botones Laterales -->
                 <div class="nss-bottom-area">
                     <div class="nss-progress-section">
                         <div class="nss-progress-title">
@@ -530,34 +639,30 @@
                         </div>
                     </div>
 
-                    <!-- Botones laterales -->
                     <div class="nss-side-buttons">
-                        <div class="nss-icon-btn active" title="Tienda (Próximamente)">🛒</div>
-                        <div class="nss-icon-btn bag" title="Inventario (Inactivo)">💼</div>
-                        <div class="nss-icon-btn" title="Préstamos (Inactivo)">💰</div>
+                        <div class="nss-icon-btn store" title="Tienda">🛒</div>
+                        <div class="nss-icon-btn bag" title="Inventario">💼</div>
+                        <div class="nss-icon-btn" title="Préstamos">💰</div>
                     </div>
                 </div>
 
                 <div class="nss-footer-btn">VER MESES ANTERIORES</div>
             </div>
 
-            <!-- Panel de Decisiones Semanales -->
             <div class="card-panel" id="event-box" style="flex-grow: 1;">
-                <div id="event-title" style="font-weight: bold; font-size: 0.92rem; color: #fff;"></div>
-                <div id="event-desc" style="font-size: 0.8rem; color: #8892b0; line-height: 1.35; margin-top: 4px;"></div>
-                <div class="options-list" id="options-container" style="margin-top: 8px;"></div>
+                <div id="event-title" style="font-family: 'Teko', sans-serif; font-size: 1.35rem; color: #ffffff; letter-spacing: 0.5px; border-bottom: 1px solid #282c36; padding-bottom: 2px;"></div>
+                <div id="event-desc" style="font-size: 0.78rem; color: #8892b0; line-height: 1.3; margin-top: 2px;"></div>
+                <div class="options-list" id="options-container" style="margin-top: 6px;"></div>
             </div>
         </div>
 
         <!-- ================= PANTALLA DE CIERRE DE MES ================= -->
         <div id="screen-month-closing" class="screen hidden">
-            <div class="title-header">Cierre de Mes</div>
-
             <div class="card-panel">
-                <div class="card-title">Estado Actual del Jugador</div>
+                <div class="card-title">Cierre de Mes • Estado Jugador</div>
                 <div class="nss-grid-row-3" style="margin-bottom: 6px;">
                     <div class="nss-box"><div class="nss-box-val val-sueldo" id="close-hud-sueldo">S/ 1025</div><div class="nss-box-lbl">INGRESO</div></div>
-                    <div class="nss-box"><div class="nss-box-val val-saldo" id="close-hud-saldo">S/ 500</div><div class="nss-box-lbl">SALDO (BILLETERA)</div></div>
+                    <div class="nss-box"><div class="nss-box-val val-saldo" id="close-hud-saldo">S/ 500</div><div class="nss-box-lbl">SALDO</div></div>
                     <div class="nss-box"><div class="nss-box-val val-deuda" id="close-hud-deuda">S/ 0</div><div class="nss-box-lbl">DEUDA</div></div>
                 </div>
                 <div class="nss-grid-row-3">
@@ -579,9 +684,9 @@
 
             <div class="card-panel">
                 <div class="card-title">Abonar al Alquiler</div>
-                <p style="font-size: 0.75rem; color: #8892b0;">Ingresa la cantidad que deseas abonar (Mínimo S/ 0, Máximo S/ <span id="max-pay-allowed">350</span>):</p>
+                <p style="font-size: 0.72rem; color: #8892b0; text-align: center;">Monto a abonar (Máximo S/ <span id="max-pay-allowed">350</span>):</p>
                 <input type="number" id="input-pay-amount" placeholder="Monto a pagar..." min="0" value="350">
-                <p id="pay-error" style="color: #ff3b30; font-size: 0.75rem;" class="hidden"></p>
+                <p id="pay-error" style="color: #ff3b30; font-size: 0.72rem; text-align: center;" class="hidden"></p>
             </div>
 
             <button class="main-btn" onclick="submitMonthClosing()">CONFIRMAR Y PASAR AL SIGUIENTE MES ➔</button>
@@ -589,16 +694,14 @@
 
         <!-- ================= PANTALLA 4: RESULTADO FINAL ================= -->
         <div id="screen-result" class="screen hidden">
-            <div class="title-header">Evaluación Anual</div>
-            
             <div class="card-panel" style="text-align: center;">
-                <h2 style="color: #4cd964; font-size: 1.3rem;" id="result-status">¡AÑO COMPLETADO!</h2>
-                <p style="font-size: 0.85rem; margin-top: 6px; color: #8892b0;" id="result-text"></p>
+                <h2 style="color: #4cd964; font-family: 'Teko', sans-serif; font-size: 1.8rem;" id="result-status">¡AÑO COMPLETADO!</h2>
+                <p style="font-size: 0.82rem; margin-top: 4px; color: #8892b0;" id="result-text"></p>
             </div>
 
             <div class="card-panel">
                 <div class="card-title">Balance Final de 12 Meses</div>
-                <div style="font-size: 0.85rem; line-height: 1.7;" id="result-stats"></div>
+                <div style="font-size: 0.82rem; line-height: 1.6;" id="result-stats"></div>
             </div>
 
             <button class="main-btn" onclick="goToMenu()">REINICIAR SIMULACIÓN ↺</button>
@@ -608,7 +711,7 @@
 
     <script>
         let gameState = {
-            playerName: "",
+            playerName: "André",
             characterKey: "Tony",
             ingresoMensual: 1025,
             saldo: 1025,
@@ -681,9 +784,27 @@
                         titulo: `M${m} - S1: ALIMENTACIÓN Y TRÁFICO DE INICIO DE MES`,
                         descripcion: "Compra de víveres o consumo en menú de calle (~S/ 30/día) más pasajes de la semana.",
                         opciones: [
-                            { titulo: "🍲 Menú de calle diario + Bus público", subtitulo: "Comes fuera sin cocinar. (-S/ 225 Alimentación, -S/ 25 Pasaje, +10% Cansancio)", efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 10, red: 0 } },
-                            { titulo: "🥦 Cocinar en casa y llevar táper", subtitulo: "Ahorro al comprar en mercado pero requiere tiempo. (-S/ 140 Alimentación, -S/ 20 Pasaje, +15% Cansancio)", efectos: { gastAlim: 140, gastTransp: 20, salud: 5, cansancio: 15, red: 5 } },
-                            { titulo: "🛺 Comer menú caro + Taxi directo", subtitulo: "Mayor comodidad pero golpea el presupuesto semanal. (-S/ 300 Alimentación, -S/ 60 Pasaje, -10% Cansancio)", efectos: { gastAlim: 300, gastTransp: 60, salud: 0, cansancio: -10, red: 0 } }
+                            { 
+                                tag: "COMIDA & PASAJES",
+                                titulo: "Menú de calle diario + Bus público", 
+                                subtitulo: "Comes fuera sin cocinar.", 
+                                efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 10, red: 0 },
+                                badges: ["-S/ 250 GASTO", "+10% CANSANCIO"]
+                            },
+                            { 
+                                tag: "AHORRO CASERO",
+                                titulo: "Cocinar en casa y llevar táper", 
+                                subtitulo: "Ahorro al comprar en mercado pero requiere tiempo.", 
+                                efectos: { gastAlim: 140, gastTransp: 20, salud: 5, cansancio: 15, red: 5 },
+                                badges: ["-S/ 160 GASTO", "+5% SALUD", "+15% CANSANCIO"]
+                            },
+                            { 
+                                tag: "COMODIDAD",
+                                titulo: "Comer menú caro + Taxi directo", 
+                                subtitulo: "Mayor comodidad pero golpea el presupuesto semanal.", 
+                                efectos: { gastAlim: 300, gastTransp: 60, salud: 0, cansancio: -10, red: 0 },
+                                badges: ["-S/ 360 GASTO", "-10% CANSANCIO"]
+                            }
                         ]
                     });
                 } else if (s === 2) {
@@ -692,9 +813,27 @@
                         titulo: `M${m} - S2: ALIMENTACIÓN Y REUNIÓN FAMILIAR`,
                         descripcion: "Comida semanal e imprevistos de integración con la familia o trabajo.",
                         opciones: [
-                            { titulo: "🥘 Aportar a la comida familiar dominical", subtitulo: "Fortaleces tu red social. (-S/ 210 Alimentación, -S/ 15 Pasaje, +15% Red Familiar)", efectos: { gastAlim: 210, gastTransp: 15, salud: 0, cansancio: 0, red: 15 } },
-                            { titulo: "🍜 Menú económico estándar", subtitulo: "Mantiene la rutina semanal sin aportes. (-S/ 225 Alimentación, -S/ 25 Pasaje)", efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 0, red: 0 } },
-                            { titulo: "❌ Omitir reuniones y recortar comidas", subtitulo: "Reduces costo pero te aíslas. (-S/ 160 Alimentación, -S/ 15 Pasaje, -15% Red Familiar)", efectos: { gastAlim: 160, gastTransp: 15, salud: -5, cansancio: 5, red: -15 } }
+                            { 
+                                tag: "SOCIAL",
+                                titulo: "Aportar a la comida familiar dominical", 
+                                subtitulo: "Fortaleces tu red social y lazos familiares.", 
+                                efectos: { gastAlim: 210, gastTransp: 15, salud: 0, cansancio: 0, red: 15 },
+                                badges: ["-S/ 225 GASTO", "+15% RED FAMILIAR"]
+                            },
+                            { 
+                                tag: "RUTINA",
+                                titulo: "Menú económico estándar", 
+                                subtitulo: "Mantiene la rutina semanal sin aportes extraordinarios.", 
+                                efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 0, red: 0 },
+                                badges: ["-S/ 250 GASTO"]
+                            },
+                            { 
+                                tag: "AISLAMIENTO",
+                                titulo: "Omitir reuniones y recortar comidas", 
+                                subtitulo: "Reduces costo pero te aíslas de tu entorno.", 
+                                efectos: { gastAlim: 160, gastTransp: 15, salud: -5, cansancio: 5, red: -15 },
+                                badges: ["-S/ 175 GASTO", "-15% RED FAMILIAR"]
+                            }
                         ]
                     });
                 } else if (s === 3) {
@@ -703,9 +842,27 @@
                         titulo: `M${m} - S3: SALUD Y ALIMENTACIÓN SEMANAL`,
                         descripcion: "Mantenimiento del cuerpo, compra semanal de insumos de cocina o salud.",
                         opciones: [
-                            { titulo: "💊 Comprar vitaminas/medicina + Menú casero", subtitulo: "Cuidas tu estado físico. (-S/ 240 Alimentación, -S/ 20 Pasaje, +10% Salud)", efectos: { gastAlim: 240, gastTransp: 20, salud: 10, cansancio: -5, red: 0 } },
-                            { titulo: "🍲 Menú regular de la esquina", subtitulo: "Alimentación normal de trabajo. (-S/ 225 Alimentación, -S/ 25 Pasaje)", efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 0, red: 0 } },
-                            { titulo: "📦 Trabajar cachuelo domingo cargando", subtitulo: "Ingreso extra para compensar gasto. (+S/ 120 Saldo, -S/ 200 Alim, +25% Cansancio)", efectos: { saldoExtra: 120, gastAlim: 200, gastTransp: 20, salud: -5, cansancio: 25, red: 0 } }
+                            { 
+                                tag: "PREVENCIÓN",
+                                titulo: "Comprar vitaminas/medicina + Menú casero", 
+                                subtitulo: "Cuidas tu estado físico de manera preventiva.", 
+                                efectos: { gastAlim: 240, gastTransp: 20, salud: 10, cansancio: -5, red: 0 },
+                                badges: ["-S/ 260 GASTO", "+10% SALUD"]
+                            },
+                            { 
+                                tag: "ESTÁNDAR",
+                                titulo: "Menú regular de la esquina", 
+                                subtitulo: "Alimentación normal de trabajo diario.", 
+                                efectos: { gastAlim: 225, gastTransp: 25, salud: 0, cansancio: 0, red: 0 },
+                                badges: ["-S/ 250 GASTO"]
+                            },
+                            { 
+                                tag: "ESFUERZO EXTRA",
+                                titulo: "Trabajar cachuelo domingo cargando", 
+                                subtitulo: "Ingreso extra para compensar gasto a cambio de desgaste.", 
+                                efectos: { saldoExtra: 120, gastAlim: 200, gastTransp: 20, salud: -5, cansancio: 25, red: 0 },
+                                badges: ["+S/ 120 INGRESO", "+25% CANSANCIO"]
+                            }
                         ]
                     });
                 } else {
@@ -714,9 +871,27 @@
                         titulo: `M${m} - S4: CIERRE ALIMENTARIO Y PREPARACIÓN DE CUENTAS`,
                         descripcion: "Última semana del mes antes de la liquidación de pago de alquiler.",
                         opciones: [
-                            { titulo: "🥦 Comprar despensa balanceada de cierre", subtitulo: "Cierras el mes bien nutrido. (-S/ 225 Alimentación, -S/ 25 Pasaje)", efectos: { gastAlim: 225, gastTransp: 25, salud: 5, cansancio: 0, red: 0 } },
-                            { titulo: "🍞 Dieta estricta de pan y té al final", subtitulo: "Maximizas saldo para pagar el alquiler. (-S/ 120 Alimentación, -S/ 15 Pasaje, -10% Salud)", efectos: { gastAlim: 120, gastTransp: 15, salud: -10, cansancio: 10, red: 0 } },
-                            { titulo: "🤝 Comer en casa de parientes", subtitulo: "Ahorras en comida pero requiere transporte. (-S/ 80 Alimentación, -S/ 35 Pasaje, +10% Red)", efectos: { gastAlim: 80, gastTransp: 35, salud: 0, cansancio: 5, red: 10 } }
+                            { 
+                                tag: "BALANCE",
+                                titulo: "Comprar despensa balanceada de cierre", 
+                                subtitulo: "Cierras el mes bien nutrido y preparado.", 
+                                efectos: { gastAlim: 225, gastTransp: 25, salud: 5, cansancio: 0, red: 0 },
+                                badges: ["-S/ 250 GASTO", "+5% SALUD"]
+                            },
+                            { 
+                                tag: "AJUSTE",
+                                titulo: "Dieta estricta de pan y té al final", 
+                                subtitulo: "Maximizas saldo para pagar el alquiler pero descuidas salud.", 
+                                efectos: { gastAlim: 120, gastTransp: 15, salud: -10, cansancio: 10, red: 0 },
+                                badges: ["-S/ 135 GASTO", "-10% SALUD"]
+                            },
+                            { 
+                                tag: "APOYO",
+                                titulo: "Comer en casa de parientes", 
+                                subtitulo: "Ahorras en comida pero requiere transporte y visitas.", 
+                                efectos: { gastAlim: 80, gastTransp: 35, salud: 0, cansancio: 5, red: 10 },
+                                badges: ["-S/ 115 GASTO", "+10% RED FAMILIAR"]
+                            }
                         ]
                     });
                 }
@@ -737,11 +912,15 @@
             if (key === 'Mario') document.getElementById('btn-mario').classList.add('selected');
         }
 
+        function selectMode(mode) {
+            console.log("Modo seleccionado:", mode);
+        }
+
         function goToMenu() { showScreen('screen-menu'); }
 
         function goToBio() {
             const inputVal = document.getElementById('input-name').value.trim();
-            gameState.playerName = inputVal !== "" ? inputVal : "";
+            gameState.playerName = inputVal !== "" ? inputVal : "André";
 
             const data = personajesData[gameState.characterKey];
             document.getElementById('bio-title').innerText = data.nombre;
@@ -819,14 +998,25 @@
             container.innerHTML = '';
 
             ev.opciones.forEach(opt => {
-                const btn = document.createElement('div');
-                btn.className = 'opt-btn';
-                btn.innerHTML = `
+                const card = document.createElement('div');
+                card.className = 'opt-card';
+                
+                let badgesHtml = '';
+                if (opt.badges) {
+                    opt.badges.forEach(b => {
+                        let badgeClass = (b.includes('-S/') || b.includes('CANSANCIO')) ? 'badge-effect negative' : 'badge-effect';
+                        badgesHtml += `<span class="${badgeClass}">${b}</span>`;
+                    });
+                }
+
+                card.innerHTML = `
+                    <div class="opt-tag">${opt.tag}</div>
                     <div class="opt-title">${opt.titulo}</div>
                     <div class="opt-sub">${opt.subtitulo}</div>
+                    <div class="opt-effects-row">${badgesHtml}</div>
                 `;
-                btn.onclick = () => applyDecision(opt.efectos);
-                container.appendChild(btn);
+                card.onclick = () => applyDecision(opt.efectos);
+                container.appendChild(card);
             });
         }
 
@@ -906,7 +1096,7 @@
             const totalRentOwed = gameState.alquilerCosto + gameState.alquilerAdeudado;
 
             if (payAmount > totalRentOwed) {
-                errorEl.innerText = `⚠️ No puedes pagar más del total adeudado (Máximo S/ ${totalRentOwed}).`;
+                errorEl.innerText = `⚠️ Máximo a pagar S/ ${totalRentOwed}.`;
                 errorEl.classList.remove('hidden');
                 return;
             }
@@ -961,27 +1151,27 @@
             if (reasonOverride === "DESAHUCIO" || gameState.mesesRentaSinPagar >= 3) {
                 statusEl.innerText = "🏠 DESAHUCIO / DESALOJO";
                 statusEl.style.color = "#ff3b30";
-                textEl.innerText = `${gameState.playerName}, acumulaste 3 meses de alquiler sin pagar. El dueño de la propiedad tomó posesión del inmueble.`;
+                textEl.innerText = `${gameState.playerName}, acumulaste 3 meses de alquiler sin pagar. Perdiste la vivienda.`;
             } else if (gameState.deuda > 600) {
                 statusEl.innerText = "❌ QUIEBRA POR DEUDA";
                 statusEl.style.color = "#ff3b30";
-                textEl.innerText = `${gameState.playerName}, acumulaste S/ ${gameState.deuda} en deudas informales e intereses fuera de control.`;
+                textEl.innerText = `${gameState.playerName}, acumulaste S/ ${gameState.deuda} en deudas informales descontroladas.`;
             } else if (gameState.salud <= 0) {
                 statusEl.innerText = "🏥 COLAPSO DE SALUD";
                 statusEl.style.color = "#ff3b30";
-                textEl.innerText = `${gameState.playerName}, el desgaste físico acumulado redujo tu salud a 0%. Fuiste internado de emergencia.`;
+                textEl.innerText = `${gameState.playerName}, tu salud llegó a 0% por agotamiento extremo.`;
             } else if (gameState.redFamiliar <= 0) {
                 statusEl.innerText = "💔 COLAPSO RED FAMILIAR";
                 statusEl.style.color = "#ff3b30";
-                textEl.innerText = `${gameState.playerName}, aislaste por completo a tu entorno y perdiste todo tu respaldo social ante imprevistos.`;
+                textEl.innerText = `${gameState.playerName}, te quedaste completamente aislado sin red de apoyo.`;
             } else {
                 statusEl.innerText = "🎉 ¡1 AÑO SUPERADO!";
                 statusEl.style.color = "#4cd964";
-                textEl.innerText = `¡Felicidades, ${gameState.playerName}! Lograste sobrevivir los 12 meses completos del año administrando tu salario mínimo en Lima.`;
+                textEl.innerText = `¡Felicidades, ${gameState.playerName}! Lograste sobrevivir los 12 meses completos del año.`;
             }
 
             statsEl.innerHTML = `
-                • <b>Saldo Final (Billetera):</b> S/ ${gameState.saldo}<br>
+                • <b>Saldo Final:</b> S/ ${gameState.saldo}<br>
                 • <b>Deuda Acumulada:</b> S/ ${gameState.deuda}<br>
                 • <b>Salud Final:</b> ${gameState.salud}%<br>
                 • <b>Cansancio Final:</b> ${gameState.cansancio}%<br>
